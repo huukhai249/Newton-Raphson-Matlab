@@ -1,17 +1,19 @@
 clc; clear;
 
-% Parameters
-lambda_start = 0.1;
+%% Parameters
+lambda_start = 0.1; % in Xuesi's work, lambda is beta
 lambda_end = 1;
 n_start = 0.1;
 n_end = 2.0;
-sigma_fixed = 0.367879; % Fixed sigma value (or k value)
+sigma_fixed = 0.368694; % Fixed sigma value (or k value in Xuesi's work)
+% sigma_fixed take from find_sigma.m program
+%% ----------  START NEWTON-RAPHSON LOOP  --------------%%
 
-n_range = n_start:0.1:n_end; % Range for n
-lambda_range = lambda_start:0.1:lambda_end; % Range for lambda (initial guess)
+n_range = n_start:0.01:n_end; % Range for n
+lambda_range = lambda_start:0.01:lambda_end; % Range for lambda (initial guess)
 
 % Tolerances and iteration limit for Newton-Raphson
-tolerance = 1e-16;
+tolerance = 1e-12; % Adjusted tolerance
 max_iterations = 100;
 h = 1e-6; % Step size for numerical derivative
 
@@ -23,8 +25,9 @@ f_values = [];
 fprintf('Iteration\tSigma\t\tN\t\tLambda Init\tLambda\n');
 fprintf('-------------------------------------------------------------\n');
 
-% Loop over all combinations of lambda and n
+%% Loop over all combinations of lambda and n
 for n = n_range
+    found = false;
     for lambda_init = lambda_range
         lambda = lambda_init; % Initial guess for lambda
         
@@ -89,6 +92,7 @@ for n = n_range
                 n_values = [n_values, n];
                 lambda_values = [lambda_values, lambda_new];
                 f_values = [f_values, abs(f)]; % Store the absolute value of f(lambda)
+                found = true;
                 break;
             end
             
@@ -104,10 +108,13 @@ for n = n_range
                 disp('Max iterations reached, no convergence.');
             end
         end
+        if found
+            break;
+        end
     end
 end
 
-% Filter the results
+%% Filter the results to get one lambda value for each n
 filtered_n_values = [];
 filtered_lambda_values = [];
 
@@ -125,27 +132,59 @@ for i = 1:length(unique_n_values)
     filtered_lambda_values = [filtered_lambda_values, lambda_values(best_idx)];
 end
 
-% Create the plot
+%% Separate the results into two groups: n < 1 and n >= 1
+n_less_than_1 = filtered_n_values(filtered_n_values < 1);
+lambda_less_than_1 = filtered_lambda_values(filtered_n_values < 1);
+
+n_greater_than_1 = filtered_n_values(filtered_n_values >= 1);
+lambda_greater_than_1 = filtered_lambda_values(filtered_n_values >= 1);
+
+%% Create the plot for n < 1
 figure; % Create a new figure
 hold on; % Allow multiple plots on the same figure
 
-% Plot the results
-plot(filtered_n_values, filtered_lambda_values, 'bo-');
+% Plot the results for n < 1
+plot(n_less_than_1, lambda_less_than_1, 'bo');
 xlabel('n');
 ylabel('\beta');
-title('Relationship between n and \beta for fixed k=0.367879, Newtonian fluid');
+title('Relationship between n and \beta for n < 1, fixed k=0.368694, Newtonian fluid');
 grid on;
 
 % Ensure the plot is visually appealing
-axis([n_start n_end lambda_start lambda_end]); % Set axis limits based on the ranges (0.1 to 1)
+axis([n_start 1 lambda_start lambda_end]); % Set axis limits based on the ranges (0.1 to 1)
 hold off;
 
-% Write results to an Excel file
-filename = 'lambda_n_values_filtered.xlsx';
+% Write results to an Excel file for n < 1
+filename_less_than_1 = 'lambda_n_lt1.xlsx';
 
-if isfile(filename)
-    delete(filename); % Delete the existing file if it exists
+if isfile(filename_less_than_1)
+    delete(filename_less_than_1); % Delete the existing file if it exists
 end
 
-result_table = table(filtered_lambda_values', filtered_n_values', 'VariableNames', {'Lambda', 'N'});
-writetable(result_table, filename);
+result_table_less_than_1 = table(lambda_less_than_1', n_less_than_1', 'VariableNames', {'Lambda', 'N'});
+writetable(result_table_less_than_1, filename_less_than_1);
+
+%% Create the plot for n >= 1
+% figure; % Create a new figure
+% hold on; % Allow multiple plots on the same figure
+% 
+% % Plot the results for n >= 1
+% plot(n_greater_than_1, lambda_greater_than_1, 'ro-');
+% xlabel('n');
+% ylabel('\beta');
+% title('Relationship between n and \beta for n >= 1, fixed k=0.368694, Newtonian fluid');
+% grid on;
+% 
+% % Ensure the plot is visually appealing
+% axis([1 n_end lambda_start lambda_end]); % Set axis limits based on the ranges (0.1 to 1)
+% hold off;
+% 
+% % Write results to an Excel file for n >= 1
+% filename_greater_than_1 = 'lambda_n_values_filtered_greater_than_1.xlsx';
+% 
+% if isfile(filename_greater_than_1)
+%     delete(filename_greater_than_1); % Delete the existing file if it exists
+% end
+% 
+% result_table_greater_than_1 = table(lambda_greater_than_1', n_greater_than_1', 'VariableNames', {'Lambda', 'N'});
+% writetable(result_table_greater_than_1, filename_greater_than_1);

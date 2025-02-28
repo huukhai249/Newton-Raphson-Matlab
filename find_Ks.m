@@ -1,9 +1,10 @@
 % Constants
-k = 0.367879;         % Given k
-beta1 = 0.657519;     % Fixed parameter beta1
+k = 0.368694; 
+beta1_sq = (k^2-1)/(2*log(k));% Given k
+beta1 = sqrt(beta1_sq);     % Fixed parameter beta1
 
 % Read data from Excel file (assuming the file is named 'data.xlsx')
-data = readmatrix('lambda_n_values_lt1.xlsx'); % Read the Excel file
+data = readmatrix('lambda_n_lt1.xlsx'); % Read the Excel file
 beta_values = data(:, 1);       % Column 1: beta values
 n_values = data(:, 2);          % Column 2: n values
 
@@ -47,7 +48,6 @@ plot(n_values, Ks_values);
 xlabel('n');
 ylabel('K_s');
 title('K_s vs n for different β values');
-legend('show', 'Location', 'best');
 grid on;
 
 % Set axis limits (adjust as needed)
