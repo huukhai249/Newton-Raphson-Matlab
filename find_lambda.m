@@ -1,13 +1,9 @@
-% clc; clear;
-% Q=[7.03E-05,7.03E-04,0.0070319,0.070319];
-% DelP = [4707.548,47074.53,470599.6,4691910];
-% ratio = Q ./ DelP;
-% m = mean(ratio);
-% yline(m, 'k--', sprintf('%.2f', m)); 
-% plot(Q,ratio); grid on;
+clc; clear;
+% This program finds the relationship between lambda, n, and sigma in Power-law fluids
+% as the result from eqn 1.327, p.127 Non-Newtonian Flow and Applied Rheology Engineering by 
+% R. P. Chhabra, J. F. Richardson -- Butterworth-Heinemann_IChemE, 2ed, 2008 
 
-% Parameters
-
+%% Parameters
 
 lambda_start = 0.1;
 lambda_end = 1;
@@ -16,7 +12,7 @@ sigma_end = 0.9;
 n_start =0.1;
 n_end = 2.0;
 
-sigma_range = sigma_start:0.1:sigma_end; % Range for sigma
+sigma_range = sigma_start:0.05:sigma_end; % Range for sigma
 n_range = n_start:0.1:n_end; % Range for n
 lambda_range = lambda_start:0.1:lambda_end; % Range for lambda (initial guess)
 
@@ -33,6 +29,8 @@ sigma_values = [];
 % Loop over all combinations of sigma, lambda, and n
 for sigma = sigma_range;
     for n = n_range
+        best_lambda = NaN;
+        best_error = inf;
         for lambda_init = lambda_range
             lambda = lambda_init; % Initial guess for lambda
             
@@ -58,7 +56,6 @@ for sigma = sigma_range;
                 
                 % Compute f(lambda + h)
                 % f(lambda + h) = I1_plus -I2_plus
-
 
                 x1_plus = linspace(sigma, lambda_plus_h, 100);
                 integrand1_plus = (lambda_plus_h^2 ./ x1_plus - x1_plus).^(1/n);
@@ -94,12 +91,12 @@ for sigma = sigma_range;
                 
                 % Check convergence
                 if abs(lambda_new - lambda) < tolerance
-                    % Store the converged values
-                    n_values = [n_values, n];
-                    lambda_values = [lambda_values, lambda_new];
-                    sigma_values = [sigma_values, sigma];
-                    fprintf('Converged for sigma = %.2f, n = %.2f, lambda_init = %.2f, lambda = %.6f\n', ...
-                        sigma, n, lambda_init, lambda_new);
+                    % Check if this lambda is the best one for this n
+                    error = abs(f);
+                    if error < best_error
+                        best_error = error;
+                        best_lambda = lambda_new;
+                    end
                     break;
                 end
                 
@@ -115,6 +112,14 @@ for sigma = sigma_range;
                     disp('Max iterations reached, no convergence.');
                 end
             end
+        end
+        
+        % Store the best lambda for this n
+        if ~isnan(best_lambda)
+            n_values = [n_values, n];
+            lambda_values = [lambda_values, best_lambda];
+            sigma_values = [sigma_values, sigma];
+            fprintf('Best result for sigma = %.2f, n = %.2f: lambda = %.6f\n', sigma, n, best_lambda);
         end
     end
 end
@@ -134,7 +139,7 @@ for i = 1:length(sigma_range)
          'Marker', markers{mod(i-1, length(markers))+1}, ...
          'LineStyle', 'none', ...
          'Color', colors(i,:), ...
-         'DisplayName', sprintf('σ = %.1f', sigma_range(i)));
+         'DisplayName', sprintf('σ = %.2f', sigma_range(i)));
 end
 
 % Add labels and legend

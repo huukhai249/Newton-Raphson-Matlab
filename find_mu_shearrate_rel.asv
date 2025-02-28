@@ -1,23 +1,52 @@
 clc; clear;
 
 % Read data from Excel file (assuming the file is named 'data.xlsx')
-data = readmatrix('newtonian_pQ.xlsx'); % Read the Excel file
-Q_values = data(:, 3);       % Column 1: beta values
-DelP_values = data(:, 6);          % Column 2: n values
+data = readmatrix('non_newtonian_pQ.xlsx'); % Read the Excel file
+Q_values = data(:, 2);       % Column 1: beta values
+DelP_values = data(:, 5);          % Column 2: n values
 
-A_avg = 0.5*(10*30+10*60);
-P_wet = 2*(10+45);
-
+A_avg = 0.5*(10*30+10*60)*10e-6;
+P_wet = 2*(10+45)*10e-3;
+L = 200*10e-3;
 R = 2*A_avg/P_wet;
-k = 0.367879;
-beta1 = 0.657519; 
-kp = (8*(1-k)^2)/(1+k^2-2*beta1^2);
-ks = 4.5058;
+k = 0.368694; % take from find_sigma.m file
+beta1_sq = (k^2-1)/(2*log(k)); 
+kp = (8*(1-k)^2)/(1+k^2-2*beta1_sq);
+ks = 4.5284;
+V = pi*R^2*L*(1-k^2);
+rho = 1000;
+H = R*(1-k);
+
 
 shear_rate_eff_values = zeros(size(Q_values)); % Preallocate array for Ks
+mu_eff_values = zeros(size(Q_values)); % Preallocate array for Ks
+U_avg_values = zeros(size(Q_values));
+Np_values = zeros(size(Q_values));
+Re_values = zeros(size(Q_values));
+
+
 
 for i = 1:length(Q_values)
-    Q = Q_values(i)
+    Q = Q_values(i);
+    delP = -DelP_values(i);
     shear_rate_app = Q/(pi*R^3*(1-k)^2*(1+k));
-    shear_rate_eff_values(i) = ks
+    shear_rate_eff_values(i) = ks*shear_rate_app;
+    mu_eff_values(i) = (delP*Q)/(V*kp*shear_rate_app^2);
+
+
+    u_avg = Q/A_avg;
+    Np_values(i) =  delP*Q/(rho*u_avg^2*shear_rate_app);
+    Re_values(i) = rho*u_avg*H/(mu_eff_values(i));
+
 end
+
+plot(shear_rate_eff_values,mu_eff_values);
+xlabel('Effective Shear rate');
+ylabel('Effective Viscosity');
+title('Relationship between \mu effective and Shear rate[1/');
+% Set x-axis to logarithmic scale
+set(gca, 'XScale', 'log');
+% Set y-axis to logarithmic scale (optional, uncomment if needed)
+set(gca, 'YScale', 'log');
+grid on;
+
