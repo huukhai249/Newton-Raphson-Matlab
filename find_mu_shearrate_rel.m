@@ -1,7 +1,7 @@
 clc; clear;
 
 % Read data from Excel file (assuming the file is named 'non_newtonian_pQ.xlsx')
-data = readmatrix('non_newtonian_pQ.xlsx'); % Read the Excel file
+data = readmatrix('non_newtonian_pQ_raw.xlsx'); % Read the Excel file
 Q_values = data(:, 2);       % Column 2: Q values
 DelP_values = data(:, 5);    % Column 5: DelP values
 
@@ -9,10 +9,10 @@ A_avg = 0.5 * (10 * 30 + 10 * 60) * 10e-6;
 P_wet = 2 * (10 + 45) * 10e-3;
 L = 200 * 10e-3;
 R = 2 * A_avg / P_wet;
-k = 0.368694; % Taken from find_sigma.m file
+k = 0.36881; % Taken from find_sigma.m file
 beta1_sq = (k^2 - 1) / (2 * log(k)); 
 kp = (8 * (1 - k)^2) / (1 + k^2 - 2 * beta1_sq);
-ks = 4.5284;
+ks = 4.5384;
 V = pi * R^2 * L * (1 - k^2);
 rho = 1000;
 H = R * (1 - k);
@@ -37,10 +37,11 @@ end
 
 % Plot each value of shear_rate_eff against mu_eff as individual points
 figure;
-scatter(Re_values, Np_values, 'filled');
-xlabel('N_p [-]');
-ylabel('Effective Reynold number');
-title('Relationship between Re_e_f_f and N_p');
+scatter(Re_values,Np_values, 'filled');
+xlabel('\Re_e_f_f [-]');
+ylabel('N_p [-]');
+
+% title('Relationship between Re_e_f_f and N_p');
 % Set x-axis to logarithmic scale
 set(gca, 'XScale', 'log');
 % Set y-axis to logarithmic scale
