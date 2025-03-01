@@ -139,13 +139,13 @@ for i = 1:length(sigma_range)
          'Marker', markers{mod(i-1, length(markers))+1}, ...
          'LineStyle', 'none', ...
          'Color', colors(i,:), ...
-         'DisplayName', sprintf('σ = %.2f', sigma_range(i)));
+         'DisplayName', sprintf('k = %.2f', sigma_range(i)));
 end
 
 % Add labels and legend
 xlabel('n');
-ylabel('λ');
-title('Relationship between n and λ for different σ values');
+ylabel('\beta');
+title('Relationship between n and \beta for different k values');
 legend('show');
 grid on;
 
