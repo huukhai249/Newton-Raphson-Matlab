@@ -3,8 +3,8 @@
 %% Init Parameters
 clc; clear;
 data = readmatrix('newtonian_pQ.xlsx');
-Q_values = data(:, 3);       % Column 1: beta values
-DelP_values = data(:, 6);          % Column 2: n values 
+Q_values = data(:, 2);       % Column 1: beta values
+DelP_values = data(:, 5);          % Column 2: n values 
 ratio_values = Q_values ./ DelP_values ;
 % Constants
 L = 200*10e-3;
@@ -21,7 +21,7 @@ h = 1e-6; % Step size for numerical derivative
 control_threshold = 0.0001; % Control threshold for f(x_guess)
 
 % Initial guess
-x_guess = 0.3;
+x_guess = 0.33;
 guesses_list = zeros(1, max_iterations); % Preallocate for performance
 guesses_list(1) = x_guess;
 

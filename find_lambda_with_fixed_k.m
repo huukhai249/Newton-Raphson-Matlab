@@ -5,7 +5,7 @@ lambda_start = 0.1; % in Xuesi's work, lambda is beta
 lambda_end = 1;
 n_start = 0.1;
 n_end = 2.0;
-sigma_fixed = 0.368694; % Fixed sigma value (or k value in Xuesi's work)
+sigma_fixed = 0.36881; % Fixed sigma value (or k value in Xuesi's work)
 % sigma_fixed take from find_sigma.m program
 %% ----------  START NEWTON-RAPHSON LOOP  --------------%%
 
