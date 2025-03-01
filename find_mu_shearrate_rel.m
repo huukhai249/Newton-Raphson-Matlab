@@ -37,10 +37,10 @@ end
 
 % Plot each value of shear_rate_eff against mu_eff as individual points
 figure;
-scatter(shear_rate_eff_values, mu_eff_values, 'filled');
-xlabel('Effective Shear rate [1/s]');
-ylabel('Effective Viscosity [Pa.s]');
-title('Relationship between \mu effective and Shear rate');
+scatter(Re_values, Np_values, 'filled');
+xlabel('N_p [-]');
+ylabel('Effective Reynold number');
+title('Relationship between Re_e_f_f and N_p');
 % Set x-axis to logarithmic scale
 set(gca, 'XScale', 'log');
 % Set y-axis to logarithmic scale
