@@ -7,11 +7,12 @@ Q_values = data(:, 2);       % Column 1: beta values
 DelP_values = data(:, 5);          % Column 2: n values 
 ratio_values = Q_values ./ DelP_values ;
 % Constants
-L = 200*10e-3;
-R = 90/11*10e-3;
+L = 0.05;
+R = 0.0025;
 ratio = mean(ratio_values);
+mu =1;
 %% Declare sigma function -- see derivation at ....
-A = 8 * L * ratio / (pi * R^4);
+A = 8 * mu * L * ratio / (pi * R^4);
 f = @(x) ((1 - x.^2).^2) .* (1 + 1 ./ log(x)) - A;
 
 %% Tolerances and iteration limit for Newton-Raphson
