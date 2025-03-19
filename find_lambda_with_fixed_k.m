@@ -5,7 +5,7 @@ lambda_start = 0.1; % in Xuesi's work, lambda is beta
 lambda_end = 1;
 n_start = 0.1;
 n_end = 2.0;
-sigma_fixed = 0.36881; % Fixed sigma value (or k value in Xuesi's work)
+sigma_fixed = 0.3; % Fixed sigma value (or k value in Xuesi's work)
 % sigma_fixed take from find_sigma.m program
 %% ----------  START NEWTON-RAPHSON LOOP  --------------%%
 
@@ -163,6 +163,9 @@ end
 
 result_table_less_than_1 = table(lambda_less_than_1', n_less_than_1', 'VariableNames', {'Lambda', 'N'});
 writetable(result_table_less_than_1, filename_less_than_1);
+
+beta_mean = mean(lambda_less_than_1)
+
 
 %% Create the plot for n >= 1
 % figure; % Create a new figure
