@@ -1,7 +1,8 @@
 clc;
 clear;
-% % Process for newtonian fluid
-% data = readmatrix('newtonian_pQ2.xlsx');
+
+%% Process for newtonian fluid
+% data = readmatrix('newtonian_pQ_ansymetricJang.xlsx');
 % Q_values = data(:, 2);       % Column 1: beta values
 % DelP_values = data(:, 5); 
 % R1 = 0.0025; % m
@@ -27,7 +28,7 @@ clear;
 %  xlim([-0.05, 0.4]);
 
 %% Process for non-newtonian fluid
-data = readmatrix('non_newtonian_pQ_jangGeo.xlsx');
+data = readmatrix('non_newtonian_pQ_ansymetricJang.xlsx');
 Q_values = data(:, 2);       % Column 1: beta values
 DelP_values = data(:, 5); 
 R1 = 0.0025; % m
@@ -64,6 +65,7 @@ end
 
 % Plot each value of shear_rate_eff against mu_eff as individual points
 figure;
+
 % Q_values_mm3 = 10^6*Q_values;
 % scatter(Q_values_mm3,Ks_values,'filled');
 % ylim([10, 1000]);
@@ -77,6 +79,23 @@ ylabel('N_p [-]');
 % scatter(shear_rate_eff_values,mu_eff_values, 'filled');
 % xlabel('shear-rate_e_f_f [1/s]');
 % ylabel('\mu_e_f_f [-]');
+
+
+% Q_values_ml = 10^6*Q_values;
+% scatter(Q_values_ml,Ks_values,'filled');
+% ylim([10, 1000]);
+% xlabel('Volume Flowrate,Q [ml/s] [-]');
+% ylabel('Ks [-]');
+% ks=mean(Ks_values)
+% 
+% scatter(Re_values,Np_values, 'filled');
+% xlabel('Re_e_f_f [-]');
+% ylabel('N_p [-]');
+
+scatter(shear_rate_eff_values,mu_eff_values, 'filled');
+xlabel('shear-rate_e_f_f [1/s]');
+ylabel('\mu_e_f_f [-]');
+% 
 
 % 
 % Set logarithmic scale

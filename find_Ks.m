@@ -1,5 +1,6 @@
-% Constants
-k = 0.2; 
+ 
+
+k = 0.3; 
 beta1_sq = (k^2-1)/(2*log(k));% Given k
 beta1 = sqrt(beta1_sq);     % Fixed parameter beta1
 

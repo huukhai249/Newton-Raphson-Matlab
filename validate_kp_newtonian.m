@@ -2,7 +2,7 @@ clc; clear;
 
 %% Read simulation data
 
-data = readmatrix('non_newtonian_pQ.xlsx');
+data = readmatrix('newtonian_pQ_kenic.xlsx');
 Q_values = data(:, 2);       % Column 1: beta values
 DelP_values = data(:, 5); 
 
