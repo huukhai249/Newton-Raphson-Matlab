@@ -2,19 +2,25 @@ clc;
 clear;
 
 %% Process for newtonian fluid
-% data = readmatrix('newtonian_pQ_ansymetricJang.xlsx');
-% Q_values = data(:, 2);       % Column 1: beta values
+% data = readmatrix('newtonian_pQ_rect.xlsx');
+% Q_values = data(:, 3);       % Column 1: beta values
 % DelP_values = data(:, 5); 
-% R1 = 0.0025; % m
-% A = pi*R1^2;
-% L = 0.05; 
-% V = A*L;
+% % R1 = 0.0025; % m
+% % A = pi*R1^2;
+% % L = 0.05; 
+% % V = A*L;
+% %For rectangular cross-section
+% b =0.005;
+% d =0.005;
+% L = 0.05;
+% %%%%%%%%%%%
 % mu = 1;
 % nloop = length(Q_values);
 % Kp_values = [];
 % for i=1:nloop
 % Q = Q_values(i); delP = -DelP_values(i);
-% Kp_values(i) = (delP*Q/V)*((pi^2*R1^6)/(2*Q^2*mu));
+% % Kp_values(i) = (delP*Q/V)*((pi^2*R1^6)/(2*Q^2*mu));
+% Kp_values(i) = (delP/Q)*(b*d^3)/(36*L*mu);
 % end
 % Q_values_ml = 10^6*Q_values;
 % figure;
@@ -24,20 +30,25 @@ clear;
 % grid on;
 % mean_Kp = mean(Kp_values)
 % % Set x and y limits
-% ylim([2.6, 4]);
-%  xlim([-0.05, 0.4]);
+% ylim([0.4, 1]);
+% xlim([-0.3, 2.4]);
 
 %% Process for non-newtonian fluid
-data = readmatrix('non_newtonian_pQ_ansymetricJang.xlsx');
-Q_values = data(:, 2);       % Column 1: beta values
+data = readmatrix('nonnewtonian_pQ_rect.xlsx');
+Q_values = data(:, 4);       % Column 1: beta values
 DelP_values = data(:, 5); 
-R1 = 0.0025; % m
-A = pi*R1^2; 
-L = 0.05; 
+% R1 = 0.0025; % m
+% A = pi*R1^2; 
+% L = 0.05; 
+% For rectangular geometry
+b =0.005;
+d =0.005;
+L = 0.05;
+A = b*d;
 V = A*L;
 rho = 1000;
-H = R1/4; %H =D/4
-kp = 3.3839;
+H = d/6; %H =D/4
+kp = 0.7831;
 m =10; n=0.6;
 
 Np_values = zeros(size(Q_values));
@@ -66,39 +77,25 @@ end
 % Plot each value of shear_rate_eff against mu_eff as individual points
 figure;
 
-% Q_values_mm3 = 10^6*Q_values;
-% scatter(Q_values_mm3,Ks_values,'filled');
-% ylim([10, 1000]);
-% xlabel('Volume Flowrate,Q [ml/s] [-]');
-% ylabel('Ks [-]');
-
-scatter(Re_values,Np_values, 'filled');
-xlabel('Re_e_f_f [-]');
-ylabel('N_p [-]');
-% 
-% scatter(shear_rate_eff_values,mu_eff_values, 'filled');
-% xlabel('shear-rate_e_f_f [1/s]');
-% ylabel('\mu_e_f_f [-]');
-
-
-% Q_values_ml = 10^6*Q_values;
-% scatter(Q_values_ml,Ks_values,'filled');
-% ylim([10, 1000]);
-% xlabel('Volume Flowrate,Q [ml/s] [-]');
-% ylabel('Ks [-]');
-% ks=mean(Ks_values)
+Q_values_ml = 10^6*Q_values;
+scatter(Q_values_ml,Ks_values,'filled');
+ylim([-10, 10]);
+xlabel('Volume Flowrate,Q [ml/s]');
+ylabel('Ks [-]');
+ks=mean(Ks_values)
 % 
 % scatter(Re_values,Np_values, 'filled');
 % xlabel('Re_e_f_f [-]');
 % ylabel('N_p [-]');
 
-scatter(shear_rate_eff_values,mu_eff_values, 'filled');
-xlabel('shear-rate_e_f_f [1/s]');
-ylabel('\mu_e_f_f [-]');
-% 
+% scatter(shear_rate_eff_values,mu_eff_values, 'filled');
+% xlabel('shear-rate_e_f_f [1/s]');
+% ylabel('\mu_e_f_f [-]');
+% % 
 
 % 
 % Set logarithmic scale
 set(gca, 'XScale', 'log');
-set(gca, 'YScale', 'log');
+% set(gca, 'YScale', 'log');
 grid on;
+%%
