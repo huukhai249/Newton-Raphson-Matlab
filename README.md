@@ -5,8 +5,9 @@
 The Newton-Raphson method is an iterative numerical technique for finding approximate solutions to real-valued functions. It is one of the most widely used methods for solving equations of the form \( f(x) = 0 \). The method is named after Isaac Newton and Joseph Raphson.
 
 ## Algorithm
-![image](500px-NewtonIteration_Ani.gif)
-
+<div style="text-align: center;">
+  <img src="500px-NewtonIteration_Ani.gif" alt="Example GIF">
+</div>
 The Newton-Raphson method uses the idea of linear approximation. If \( x_n \) is an approximation to a root of \( f(x) = 0 \), then a better approximation \( x_{n+1} \) is given by:
 
 \[ x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)} \]
