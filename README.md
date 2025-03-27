@@ -9,8 +9,8 @@ The Newton-Raphson method is an iterative numerical technique for finding approx
   <img src="500px-NewtonIteration_Ani.gif" alt="Example GIF">
 </div>
 The Newton-Raphson method uses the idea of linear approximation. If \( x_n \) is an approximation to a root of \( f(x) = 0 \), then a better approximation \( x_{n+1} \) is given by:
+![Formula](CodeCogsEqn.png)
 
-\[ x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)} \]
 
 where:
 - \( f(x) \) is the function for which we want to find the root.
