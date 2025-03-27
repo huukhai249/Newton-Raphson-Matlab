@@ -124,6 +124,12 @@ for k = k_range
     end
 end
 
+% Create a table for the results
+results_table = table(k_values', n_values', beta_values', 'VariableNames', {'k', 'n', 'beta'});
+
+% Save the table to a CSV file
+writetable(results_table, 'results.csv');
+
 % Create the plot for n and beta
 figure; % Create a new figure
 hold on; % Allow multiple plots on the same figure

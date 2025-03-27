@@ -1,15 +1,21 @@
 clc; clear;
 
-%% Parameters
+%% Parameters - Change in here
 k_start = 0.1; % in Xuesi's work, lambda is beta
 k_end = 1;
 alpha_start = 0.1;
 alpha_end = 20.0;
 mu = 1; % pa.s
-L_in = 0.042; % m - L initial
-R_in = 0.006; % m
-data = readmatrix('newtonian_pQ_kenic.xlsx');
-Q_values = data(:, 2); % Column 2: Q values
+% L_in = 0.05; % m - L initial
+% R_in = 0.006; % m
+%% For rectangular cross-section %%
+b = 0.005; %5mm
+d = 0.005; %5mm
+L_in = 0.05; %50mm
+R_in = ((2*b*d^2)/(3*pi))^(1/3);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+data = readmatrix('newtonian_pQ_rect.xlsx');
+Q_values = data(:, 3); % Column 2: Q values
 DelP_values = data(:, 5); % Column 5: DelP values 
 ratioPQ = Q_values ./ -(DelP_values);
 mpq = mean(ratioPQ);

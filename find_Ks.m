@@ -1,11 +1,11 @@
  
 
-k = 0.3; 
+k = 0.25; 
 beta1_sq = (k^2-1)/(2*log(k));% Given k
 beta1 = sqrt(beta1_sq);     % Fixed parameter beta1
 
 % Read data from Excel file (assuming the file is named 'data.xlsx')
-data = readmatrix('lambda_n_lt1.xlsx'); % Read the Excel file
+data = readmatrix('beta_n_lt1.xlsx'); % Read the Excel file
 beta_values = data(:, 1);       % Column 1: beta values
 n_values = data(:, 2);          % Column 2: n values
 
